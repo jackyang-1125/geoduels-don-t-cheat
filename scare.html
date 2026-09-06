@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DON'T CHEAT</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body, html {
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: not-allowed;
+    }
+    img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      animation: scareShake 0.04s infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes scareShake {
+      0% { transform: scale(1.05) translate(4px, 3px); }
+      50% { transform: scale(1.09) translate(-4px, -3px); }
+      100% { transform: scale(1.03) translate(3px, -4px); }
+    }
+  </style>
+</head>
+<body>
+  <img src="Gemini_Generated_Image_41y9qr41y9qr41y9.jpg" alt="DON'T CHEAT">
+  <script src="scare.js"></script>
+</body>
+</html>

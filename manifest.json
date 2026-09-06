@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "GeoDuels Dont Cheat",
+  "version": "13.0",
+  "description": "GeoDuels Anti-Cheat Universal Lockdown",
+  "permissions": [
+    "tabs",
+    "management",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://geoduels.io/*",
+        "*://*.geoduels.io/*"
+      ],
+      "js": ["tamper-blocker.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "*://geoduels.io/*",
+        "*://*.geoduels.io/*"
+      ],
+      "js": ["lens-shield.js", "legal.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "scare.html",
+        "scare.js",
+        "Gemini_Generated_Image_41y9qr41y9qr41y9.jpg",
+        "Generated Audio September 05, 2026 - 8_03PM.wav"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
