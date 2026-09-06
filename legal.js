@@ -84,6 +84,11 @@
           <p>
             The User hereby unconditionally and irrevocably releases, discharges, and holds harmless the developers, authors, and maintainers of this Extension from any and all legal liabilities, tort actions, consumer complaints, or financial claims arising directly or indirectly from the operation, false positives, or sensory consequences of this Extension.
           </p>
+
+          <h4 style="color: #fff; margin: 12px 0 4px 0;">SECTION 5: ABSOLUTE DISCLAIMER OF DATA LOSS AND SYSTEM IMPAIRMENT</h4>
+          <p>
+            The User expressly acknowledges and agrees that the Extension, its authors, developers, and maintainers shall bear absolutely zero liability, financial obligation, or legal responsibility for any data loss, file corruption, session state destruction, storage erasure, browser profile reset, hardware malfunction, or system impairment arising directly or indirectly from the operation, tab termination, extension enforcement, or background execution of this Extension.
+          </p>
         </div>
 
         <div style="margin-top: 16px; border-top: 1px solid #222; padding-top: 12px;">
@@ -115,38 +120,40 @@
     const checkbox = document.getElementById("legal-agree-checkbox");
     const submitBtn = document.getElementById("legal-submit-btn");
 
-    checkbox.addEventListener("change", function () {
-      if (this.checked) {
-        submitBtn.disabled = false;
-        submitBtn.style.background = "#8b0000";
-        submitBtn.style.color = "#fff";
-        submitBtn.style.border = "1px solid #ff0000";
-        submitBtn.style.cursor = "pointer";
-        submitBtn.innerText = "AUTHORIZE EXTENSION & ENTER GEODUELS";
-      } else {
-        submitBtn.disabled = true;
-        submitBtn.style.background = "#333";
-        submitBtn.style.color = "#777";
-        submitBtn.style.border = "1px solid #444";
-        submitBtn.style.cursor = "not-allowed";
-        submitBtn.innerText = "PLEASE ACCEPT THE AGREEMENT TO PROCEED";
-      }
-    });
-
-    submitBtn.addEventListener("click", function () {
-      if (!checkbox.checked) return;
-
-      localStorage.setItem(AGREEMENT_KEY, "true");
-      modal.remove();
-
-      try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (AudioCtx) {
-          const ctx = new AudioCtx();
-          ctx.resume();
+    if (checkbox && submitBtn) {
+      checkbox.addEventListener("change", function () {
+        if (this.checked) {
+          submitBtn.disabled = false;
+          submitBtn.style.background = "#8b0000";
+          submitBtn.style.color = "#fff";
+          submitBtn.style.border = "1px solid #ff0000";
+          submitBtn.style.cursor = "pointer";
+          submitBtn.innerText = "AUTHORIZE EXTENSION & ENTER GEODUELS";
+        } else {
+          submitBtn.disabled = true;
+          submitBtn.style.background = "#333";
+          submitBtn.style.color = "#777";
+          submitBtn.style.border = "1px solid #444";
+          submitBtn.style.cursor = "not-allowed";
+          submitBtn.innerText = "PLEASE ACCEPT THE AGREEMENT TO PROCEED";
         }
-      } catch (e) {}
-    });
+      });
+
+      submitBtn.addEventListener("click", function () {
+        if (!checkbox.checked) return;
+
+        localStorage.setItem(AGREEMENT_KEY, "true");
+        modal.remove();
+
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) {
+            const ctx = new AudioCtx();
+            ctx.resume();
+          }
+        } catch (e) {}
+      });
+    }
   }
 
   if (document.readyState === "loading") {
