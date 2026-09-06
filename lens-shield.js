@@ -1,7 +1,5 @@
 (function () {
-  let isArmed = false;
-  let hasGainedFocus = false;
-  let lastTriggerTime = 0;
+  let isArmed = true;
   let isBookmarkingSafe = false;
   let isUnloadingPage = false;
 
@@ -18,17 +16,6 @@
   `;
   document.documentElement.appendChild(style);
 
-  const activateFocusLock = () => {
-    if (!isUnloadingPage) {
-      hasGainedFocus = true;
-      isArmed = true;
-    }
-  };
-
-  window.addEventListener("focus", activateFocusLock);
-  window.addEventListener("pointerdown", activateFocusLock);
-  window.addEventListener("keydown", activateFocusLock);
-
   window.addEventListener("beforeunload", () => {
     isUnloadingPage = true;
   });
@@ -38,11 +25,9 @@
   });
 
   function notifyBackgroundToSpawnPopup() {
-    const now = Date.now();
-    if (document.hidden || isUnloadingPage || !isArmed || !hasGainedFocus || now - lastTriggerTime < 2500 || isBookmarkingSafe) {
+    if (document.hidden || isUnloadingPage || !isArmed || isBookmarkingSafe) {
       return;
     }
-    lastTriggerTime = now;
 
     try {
       if (typeof chrome !== "undefined" && Boolean(chrome.runtime) && typeof chrome.runtime.sendMessage === "function") {
@@ -81,7 +66,7 @@
   }, true);
 
   window.addEventListener("blur", () => {
-    if (document.hidden || isUnloadingPage || !isArmed || !hasGainedFocus || isBookmarkingSafe) return;
+    if (document.hidden || isUnloadingPage || !isArmed || isBookmarkingSafe) return;
     notifyBackgroundToSpawnPopup();
   });
 

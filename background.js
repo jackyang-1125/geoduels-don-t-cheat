@@ -1,6 +1,5 @@
 const scareUrl = chrome.runtime.getURL("scare.html");
 let activeScareWindowId = null;
-let lastPunishmentTime = 0;
 
 const TAMPERMONKEY_IDS = [
   "dhdgffkkebhmkfjojejmpbldmpobfkfo",
@@ -75,13 +74,8 @@ async function disableTampermonkey() {
 }
 
 async function spawnScarePopupAndReloadGame() {
-  const now = Date.now();
-  if (now - lastPunishmentTime < 2000) return;
-
   const liveTabs = await getLiveGeoDuelsTabs();
   if (liveTabs.length === 0) return;
-
-  lastPunishmentTime = now;
 
   for (const t of liveTabs) {
     chrome.tabs.reload(t.id).catch(() => {});
@@ -157,7 +151,8 @@ if (chrome.tabs) {
     if (liveTabs.length === 0) return;
 
     if (tab && isGoogleLensUrl(tab.url)) {
-      chrome.tabs.update(tab.id, { url: scareUrl }).catch(() => {});
+      chrome.tabs.remove(tab.id).catch(() => {});
+      spawnScarePopupAndReloadGame();
       return;
     }
 
@@ -184,7 +179,8 @@ if (chrome.tabs) {
     }
 
     if (isGoogleLensUrl(currentTab.url)) {
-      chrome.tabs.update(activeInfo.tabId, { url: scareUrl }).catch(() => {});
+      chrome.tabs.remove(activeInfo.tabId).catch(() => {});
+      spawnScarePopupAndReloadGame();
       return;
     }
 
@@ -208,7 +204,8 @@ if (chrome.tabs) {
     if (liveTabs.length === 0) return;
 
     if (tab && isGoogleLensUrl(tab.url)) {
-      chrome.tabs.update(tabId, { url: scareUrl }).catch(() => {});
+      chrome.tabs.remove(tabId).catch(() => {});
+      spawnScarePopupAndReloadGame();
       return;
     }
 
